@@ -28,6 +28,7 @@ static struct {
   gpu_limits limits;
   int width;
   int height;
+  gpu_batch* batch;
 } state;
 
 static void onDebugMessage(void* context, const char* message, int severe) {
@@ -161,6 +162,39 @@ void lovrGraphicsBegin() {
 
 void lovrGraphicsFlush() {
   gpu_flush();
+}
+
+void lovrGraphicsRender(Canvas* canvas) {
+  gpu_render_info info;
+  gpu_pass_info passInfo;
+  memset(&passInfo, 0, sizeof(passInfo));
+
+  for (uint32_t i = 0; i < 4; i++) {
+    if (!canvas->color[i].texture) {
+      info.color[i].texture = NULL;
+      break;
+    }
+
+    info.color[i].texture = canvas->color[i].texture->gpu;
+    info.color[i].resolve = canvas->color[i].resolve->gpu;
+    memcpy(info.color[i].clear, canvas->color[i].clear, 4 * sizeof(float));
+  }
+
+  if (canvas->depth.enabled) {
+    info.depth.texture = canvas->depth.texture->gpu;
+    info.depth.clear = canvas->depth.clear;
+    info.depth.stencilClear = canvas->depth.stencil.clear;
+  }
+
+  state.batch = gpu_render(&info, NULL, 0);
+}
+
+void lovrGraphicsCompute() {
+  state.batch = gpu_compute();
+}
+
+void lovrGraphicsEndPass() {
+  gpu_batch_end(state.batch);
 }
 
 // Buffer

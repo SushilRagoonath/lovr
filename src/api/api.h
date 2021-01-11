@@ -68,6 +68,8 @@ typedef struct {
 
 #define ENTRY(s) { sizeof(s) - 1, s }
 
+extern StringEntry lovrCompareMode[];
+extern StringEntry lovrCullMode[];
 extern StringEntry lovrDevice[];
 extern StringEntry lovrDeviceAxe[];
 extern StringEntry lovrDeviceButton[];

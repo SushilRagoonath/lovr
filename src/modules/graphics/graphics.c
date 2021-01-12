@@ -438,25 +438,25 @@ void lovrGraphicsSetCullMode(CullMode mode) {
 void lovrGraphicsGetDepthTest(CompareMode* test, bool* write) {
   *write = thread.pipeline.info.depth.write;
   switch (thread.pipeline.info.depth.test) {
+    case GPU_COMPARE_NONE: default: *test = COMPARE_NONE; break;
     case GPU_COMPARE_EQUAL: *test = COMPARE_EQUAL; break;
     case GPU_COMPARE_NEQUAL: *test = COMPARE_NEQUAL; break;
     case GPU_COMPARE_LESS: *test = COMPARE_LESS; break;
     case GPU_COMPARE_LEQUAL: *test = COMPARE_LEQUAL; break;
     case GPU_COMPARE_GREATER: *test = COMPARE_GREATER; break;
     case GPU_COMPARE_GEQUAL: *test = COMPARE_GEQUAL; break;
-    case GPU_COMPARE_NONE: default: *test = COMPARE_NONE; break;
   }
 }
 
 void lovrGraphicsSetDepthTest(CompareMode test, bool write) {
   switch (test) {
+    case COMPARE_NONE: default: thread.pipeline.info.depth.test = GPU_COMPARE_NONE; break;
     case COMPARE_EQUAL: thread.pipeline.info.depth.test = GPU_COMPARE_EQUAL; break;
     case COMPARE_NEQUAL: thread.pipeline.info.depth.test = GPU_COMPARE_NEQUAL; break;
     case COMPARE_LESS: thread.pipeline.info.depth.test = GPU_COMPARE_LESS; break;
     case COMPARE_LEQUAL: thread.pipeline.info.depth.test = GPU_COMPARE_LEQUAL; break;
     case COMPARE_GREATER: thread.pipeline.info.depth.test = GPU_COMPARE_GREATER; break;
     case COMPARE_GEQUAL: thread.pipeline.info.depth.test = GPU_COMPARE_GEQUAL; break;
-    case COMPARE_NONE: default: thread.pipeline.info.depth.test = GPU_COMPARE_NONE; break;
   }
   thread.pipeline.info.depth.write = write;
   thread.pipeline.dirty = true;

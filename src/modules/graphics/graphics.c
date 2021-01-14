@@ -1,4 +1,5 @@
 #include "graphics/graphics.h"
+#include "data/blob.h"
 #include "event/event.h"
 #include "core/arr.h"
 #include "core/maf.h"
@@ -15,12 +16,16 @@
 struct Buffer {
   gpu_buffer* gpu;
   BufferInfo info;
-  uint32_t access;
 };
 
 struct Texture {
   gpu_texture* gpu;
   TextureInfo info;
+};
+
+struct Shader {
+  gpu_shader* gpu;
+  ShaderInfo info;
 };
 
 static LOVR_THREAD_LOCAL struct {
@@ -623,4 +628,26 @@ void lovrTextureGetPixels(Texture* texture, uint32_t x, uint32_t y, uint32_t w, 
   uint16_t offset[4] = { x, y, layer, level };
   uint16_t extent[3] = { w, h, 1 };
   gpu_texture_read(texture->gpu, offset, extent, callback, context);
+}
+
+// Shader
+
+Shader* lovrShaderCreate(ShaderInfo* info) {
+  Shader* shader = _lovrAlloc(sizeof(Shader) + gpu_sizeof_shader());
+  shader->gpu = (gpu_shader*) (shader + 1);
+  shader->info = *info;
+  lovrAssert(gpu_shader_init(shader->gpu, NULL), "Could not create Shader");
+  return shader;
+}
+
+void lovrShaderDestroy(void* ref) {
+  Shader* shader = ref;
+  gpu_shader_destroy(shader->gpu);
+  lovrRelease(Blob, shader->info.vertex);
+  lovrRelease(Blob, shader->info.fragment);
+  lovrRelease(Blob, shader->info.compute);
+}
+
+const ShaderInfo* lovrShaderGetInfo(Shader* shader) {
+  return &shader->info;
 }

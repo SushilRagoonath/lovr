@@ -3,10 +3,12 @@
 
 #pragma once
 
+struct Blob;
 struct WindowFlags;
 
 typedef struct Buffer Buffer;
 typedef struct Texture Texture;
+typedef struct Shader Shader;
 
 typedef struct {
   bool bptc;
@@ -233,3 +235,24 @@ Texture* lovrTextureCreateView(TextureView* view);
 void lovrTextureDestroy(void* ref);
 const TextureInfo* lovrTextureGetInfo(Texture* texture);
 void lovrTextureGetPixels(Texture* texture, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t layer, uint32_t level, void (*callback)(void* data, uint64_t size, void* context), void* context);
+
+// Shader
+
+typedef enum {
+  SHADER_GRAPHICS,
+  SHADER_COMPUTE
+} ShaderType;
+
+typedef struct {
+  ShaderType type;
+  struct Blob* vertex;
+  struct Blob* fragment;
+  struct Blob* compute;
+  const char** dynamicBufferNames;
+  uint32_t dynamicBufferCount;
+  const char* label;
+} ShaderInfo;
+
+Shader* lovrShaderCreate(ShaderInfo* info);
+void lovrShaderDestroy(void* ref);
+const ShaderInfo* lovrShaderGetInfo(Shader* shader);

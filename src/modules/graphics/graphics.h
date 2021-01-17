@@ -167,7 +167,11 @@ void lovrGraphicsOrigin(void);
 void lovrGraphicsTranslate(float* translation);
 void lovrGraphicsRotate(float* rotation);
 void lovrGraphicsScale(float* scale);
-void lovrGraphicsMatrixTransform(float* transform);
+void lovrGraphicsTransform(float* transform);
+void lovrGraphicsGetViewMatrix(uint32_t index, float* viewMatrix);
+void lovrGraphicsSetViewMatrix(uint32_t index, float* viewMatrix);
+void lovrGraphicsGetProjection(uint32_t index, float* projection);
+void lovrGraphicsSetProjection(uint32_t index, float* projection);
 
 // Buffer
 

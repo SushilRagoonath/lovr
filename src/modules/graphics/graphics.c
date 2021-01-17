@@ -37,6 +37,8 @@ static LOVR_THREAD_LOCAL struct {
   } pipeline;
   uint32_t transform;
   float transforms[64][16];
+  float viewMatrix[2][16];
+  float projection[2][16];
 } thread;
 
 static struct {
@@ -530,8 +532,28 @@ void lovrGraphicsScale(vec3 scale) {
   mat4_scale(thread.transforms[thread.transform], scale[0], scale[1], scale[2]);
 }
 
-void lovrGraphicsMatrixTransform(mat4 transform) {
+void lovrGraphicsTransform(mat4 transform) {
   mat4_multiply(thread.transforms[thread.transform], transform);
+}
+
+void lovrGraphicsGetViewMatrix(uint32_t index, float* viewMatrix) {
+  lovrAssert(index < 2, "Invalid view index %d", index);
+  mat4_init(viewMatrix, thread.viewMatrix[index]);
+}
+
+void lovrGraphicsSetViewMatrix(uint32_t index, float* viewMatrix) {
+  lovrAssert(index < 2, "Invalid view index %d", index);
+  mat4_init(thread.viewMatrix[index], viewMatrix);
+}
+
+void lovrGraphicsGetProjection(uint32_t index, float* projection) {
+  lovrAssert(index < 2, "Invalid view index %d", index);
+  mat4_init(projection, thread.projection[index]);
+}
+
+void lovrGraphicsSetProjection(uint32_t index, float* projection) {
+  lovrAssert(index < 2, "Invalid view index %d", index);
+  mat4_init(thread.projection[index], projection);
 }
 
 // Buffer

@@ -84,6 +84,7 @@ extern StringEntry lovrHeadsetOrigin[];
 extern StringEntry lovrJointType[];
 extern StringEntry lovrShapeType[];
 extern StringEntry lovrSourceType[];
+extern StringEntry lovrStencilAction[];
 extern StringEntry lovrTextureFormat[];
 extern StringEntry lovrTextureType[];
 extern StringEntry lovrTimeUnit[];

@@ -38,5 +38,6 @@ bin
 deps/VrApi
 deps/pico
 deps/openxr
+deps/openvr
 deps/OpenXR-Oculus
 build/

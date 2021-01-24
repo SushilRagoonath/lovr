@@ -1,0 +1,55 @@
+version(1);
+
+project_name = "lovr";
+
+patterns = {
+"*.cpp",
+"*.c",
+"*.h",
+"*.bat",
+"*.sh",
+"*.4coder",
+"*.lua",
+"Makefile",
+};
+
+blacklist_patterns = {
+".*",
+};
+
+load_paths = {
+ { { {".", .relative = true, .recursive = true, } }, .os = "win" },
+ { { {".", .relative = true, .recursive = true, } }, .os = "linux"},
+ { { {".", .relative = true, .recursive = true, } }, .os = "mac" },
+};
+
+command_list = {
+  
+ { .name = "generate",
+   .out = "*compile*", .footer_panel = true, .save_dirty_files = true, .cursor_at_end = false,
+   .cmd = {
+          {"generate.bat", .os = "win"},
+
+   },
+ },
+ { .name = "build",
+   .out = "*compile*", .footer_panel = true, .save_dirty_files = true, .cursor_at_end = false,
+   .cmd = {
+          {"build.bat", .os = "win"},
+          {"make", .os = "linux"},
+          {"make", .os = "mac"},
+   },
+ },
+ { .name = "run",
+   .out = "*run*", .footer_panel = true, .save_dirty_files = false, .cursor_at_end = true,
+   .cmd = {
+          {"build/Debug/lovr.exe test", .os = "win"},
+          {"./game", .os = "linux"},
+          {"./game", .os = "mac"},          
+   },
+ },
+};
+
+fkey_command[3] = "generate";
+fkey_command[4] = "build";
+fkey_command[6] = "run";
